@@ -49,3 +49,9 @@ This project established a resilient identity perimeter for an M365 tenant, alig
 }
 
 
+
+<img width="1869" height="632" alt="Graph_API_Audit png" src="https://github.com/user-attachments/assets/aeb49e0d-e0bd-48cb-ac85-f88972903ee3" />
+
+
+
+<img width="1894" height="877" alt="Zero_Trust_Policies png" src="https://github.com/user-attachments/assets/4ddd0965-d22c-4039-8759-7fafec522cdb" />
