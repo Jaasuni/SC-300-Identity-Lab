@@ -46,4 +46,4 @@ This project established a resilient identity perimeter for an M365 tenant, alig
             "excludeLocations": ["[Corporate_HQ_GUID]"]
         }
     }
-}```
+}
