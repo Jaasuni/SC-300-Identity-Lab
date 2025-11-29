@@ -30,7 +30,14 @@ This project established a resilient identity perimeter for an M365 tenant, alig
 
 ## 3. Validation & Auditing
 
-### 3.1 Policy Verification (Microsoft Graph API)
+### 3.1 Visual Verification (Artifacts)
+*Evidence of secure deployment state (Report-Only) and successful API connection.*
+
+<img width="1894" height="877" alt="Zero_Trust_Policies png" src="https://github.com/user-attachments/assets/e2dae953-6cac-4d61-bdd1-90b461065df5" />
+
+<img width="1869" height="632" alt="Graph_API_Audit png" src="https://github.com/user-attachments/assets/71f0e400-eee8-4089-af70-6dac0a304f2f" />
+
+### 3.2 Policy Logic Audit (Microsoft Graph API)
 *Method: Programmatic audit via Graph Explorer to verify policy state and prevent configuration drift.*
 
 **API Endpoint:** `GET https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies`
