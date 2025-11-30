@@ -37,3 +37,16 @@ Implemented a Least Privilege administrative model using Privileged Identity Man
 ## 4. Operational Procedures
 1.  **Request:** User navigates to PIM -> My Roles -> Activate.
 2.  **Audit:** Security team reviews "PIM Resource Audit" monthly for anomalous activations or missing justifications.
+
+### 3.3 Automated Monitoring (KQL)
+*Query used in Azure Log Analytics to detect PIM activations for audit reporting.*
+
+```kusto
+AuditLogs
+| where TimeGenerated > ago(30d)
+| where OperationName contains "Add member to role completed (PIM activation)"
+| extend User = tostring(InitiatedBy.user.userPrincipalName)
+| extend Role = tostring(TargetResources[0].displayName)
+| extend Justification = tostring(ResultReason)
+| project TimeGenerated, User, Role, Justification, Result
+| order by TimeGenerated desc
