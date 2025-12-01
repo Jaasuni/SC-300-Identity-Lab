@@ -24,5 +24,6 @@ Instead of standard MFA, I utilized **Conditional Access Authentication Strength
 * **Testing:** Successfully authenticated using a device-bound Passkey on iOS/Windows.
 
 ## 4. Artifacts
-* [Policy JSON Configuration](../Policies/CA-002-RequirePhishingResistant-Admins.json)
-* [Validation Script](../Scripts/Verify-PolicyState.ps1)
+* [Policies_CA-002-RequirePhishingResistant-Admins.json](https://github.com/user-attachments/files/23863008/Policies_CA-002-RequirePhishingResistant-Admins.json)
+
+ 
