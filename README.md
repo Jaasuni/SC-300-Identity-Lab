@@ -14,7 +14,7 @@ This repository contains production-ready Infrastructure-as-Code (IaC) artifacts
 ### 1. Disaster Recovery & Automation
 * **Objective:** Automated backup of Conditional Access policies for change management.
 * **Artifacts:**
-    * [`Export-Policy_CA001-BlockLegacyAuth-AllUsers.ps1`](./Export-Policy_CA001-BlockLegacyAuth-AllUsers.ps1) (New: Targeted Policy Export)
+    * [`Export-Policy_CA001-BlockLegacyAuth-AllUsers.ps1`](./Export-Policy_CA001-BlockLegacyAuth-AllUsers.ps1) (Targeted Policy Export)
     * [`Export-CAPolicies.ps1`](./Export-CAPolicies.ps1) (Bulk Export Utility)
 * **Tech:** PowerShell + Microsoft Graph (`Policy.Read.All`).
 
@@ -38,6 +38,11 @@ This repository contains production-ready Infrastructure-as-Code (IaC) artifacts
 * **Documentation:**
     * [`Enterprise-App-Integration.md`](./Enterprise-App-Integration.md) (SaaS App integration logic)
     * [`Custom Graph API Integration.md`](./Custom%20Graph%20API%20Integration.md) (Custom API permission models)
+
+### 6. Advanced Authentication Architecture
+* **Objective:** Prevention of AiTM (Adversary-in-the-Middle) attacks on administrative identities.
+* **Documentation:** [`Phishing-Resistant-MFA.md`](./Docs/Phishing-Resistant-MFA.md)
+* **Tech:** Conditional Access Authentication Strengths, FIDO2/Passkeys, Graph API.
 
 ---
 
@@ -63,33 +68,25 @@ This project established a resilient identity perimeter for an M365 tenant, alig
 
 ### 2.3 Phishing-Resistant Administration
 *Objective: Mitigate "MFA Fatigue" and "Adversary-in-the-Middle" (AiTM) attacks.*
-* **Policy:** `Require-PhishingResistant-Admins`
+* **Policy:** `CA-002-RequirePhishingResistant-Admins`
 * **Grant Control:** Require **Phishing-Resistant MFA** (FIDO2 / CBA).
 * **Target Roles:** Global Admin, Security Admin.
 
-## 3. Validation & Auditing
+## 3. Feature Showcase: Phishing-Resistant MFA
 
-### 3.1 Visual Verification (Artifacts)
+This module demonstrates the transition from standard MFA (Push Notifications) to high-assurance credentials to stop modern identity attacks.
+
+### 3.1 Infrastructure as Code
+The policy configuration was exported via Microsoft Graph to ensure version control and disaster recovery capability.
+* [**View Policy JSON**](./Policies/CA-002-RequirePhishingResistant-Admins.json)
+
+### 3.2 Automated Validation
+Policy enforcement state is verified programmatically using the Microsoft Graph PowerShell SDK to prevent configuration drift.
+* [**View Verification Script**](./Scripts/Verify-PolicyState.ps1)
+
+### 3.3 Validation & Auditing
 *Evidence of secure deployment state (Report-Only) and successful API connection.*
 
 <img width="1894" height="877" alt="Zero_Trust_Policies png" src="https://github.com/user-attachments/assets/e2dae953-6cac-4d61-bdd1-90b461065df5" />
 
 <img width="1869" height="632" alt="Graph_API_Audit png" src="https://github.com/user-attachments/assets/71f0e400-eee8-4089-af70-6dac0a304f2f" />
-
-### 3.2 Policy Logic Audit (Microsoft Graph API)
-*Method: Programmatic audit via Graph Explorer to verify policy state and prevent configuration drift.*
-
-**API Endpoint:** `GET https://graph.microsoft.com/v1.0/identity/conditionalAccess/policies`
-
-**Response Evidence:**
-```json
-{
-    "displayName": "Block-Untrusted-Locations",
-    "state": "enabledForReportingButNotEnforced",
-    "conditions": {
-        "locations": {
-            "includeLocations": ["All"],
-            "excludeLocations": ["[Corporate_HQ_GUID]"]
-        }
-    }
-}
