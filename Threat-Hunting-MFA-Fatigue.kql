@@ -1,0 +1,21 @@
+// -----------------------------------------------------------------------
+// Title:       Detect MFA Fatigue / Spamming Attacks
+// Author:      Jason Wiggins
+// Description: Identifies users who have failed MFA > 5 times in 10 minutes.
+//              This indicates an attacker spamming push notifications 
+//              (MFA Fatigue) hoping the user accidentally clicks "Approve".
+//
+// Exam Domain: SC-300 Domain 4 (Monitor identity activity)
+// -----------------------------------------------------------------------
+
+SigninLogs
+| where TimeGenerated > ago(24h)
+| where ResultType != 0  // 0 = Success. We want failures.
+| where AuthenticationDetails has "MFA"
+// Error Code 50074 = Strong Auth Required (MFA Prompted)
+// Error Code 500121 = Strong Auth Failed (User hit Deny or ignored it)
+| where ResultDescription has "50074" or ResultDescription has "500121"
+| summarize FailureCount = count() by UserPrincipalName, IPAddress, Location, bin(TimeGenerated, 10m)
+| where FailureCount >= 5  // Threshold: 5 attempts in 10 minutes is suspicious
+| project TimeGenerated, UserPrincipalName, FailureCount, IPAddress, Location
+| order by FailureCount desc
